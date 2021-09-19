@@ -1,13 +1,13 @@
 <?php
-// Получение новой пары токенов
+/** Получение новой пары токенов */
 
-//Поддомен нужного аккаунта
+/** Поддомен нужного аккаунта */
 $subdomain = 'tlyaonovich';
 
-//Формируем URL для запроса
+/** Формируем URL для запроса */
 $link = 'https://' . $subdomain . '.amocrm.ru/oauth2/access_token';
 
-// Соберем данные для запроса. Используем refresh_token
+/** Соберем данные для запроса. Используем refresh_token */
 $data = [
 	'client_id' => '0a0f44d0-e33d-40d1-8698-d04c39c9b23c',
 	'client_secret' => 'RpS4t6kAkhWQrAvBHfFVVEoHDT8dT8Gb0AVx5I2k3NF6Cv80liglFdYlMIAQovyE',
@@ -16,13 +16,15 @@ $data = [
 	'redirect_uri' => 'https://example.com/',
 ];
 
-// Нам необходимо инициировать запрос к серверу
-// Воспользуемся библиотекой cURL
+/**
+ * Нам необходимо инициировать запрос к серверу
+ * Воспользуемся библиотекой cURL
+ */
 
-// Сохраняем дескриптор сеанса cURL
+/** Сохраняем дескриптор сеанса cURL */
 $curl = curl_init();
 
-// Устанавливаем необходимые опции для сеанса cURL
+/** Устанавливаем необходимые опции для сеанса cURL */
 curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl,CURLOPT_USERAGENT,'amoCRM-oAuth-client/1.0');
 curl_setopt($curl,CURLOPT_URL, $link);
@@ -33,12 +35,12 @@ curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($data));
 curl_setopt($curl,CURLOPT_SSL_VERIFYPEER, 1);
 curl_setopt($curl,CURLOPT_SSL_VERIFYHOST, 2);
 
-// Инициируем запрос к API и сохраняем ответ в переменную
+/** Инициируем запрос к API и сохраняем ответ в переменную */
 $out = curl_exec($curl);
 $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
 
-// Данные о токенах
+/** Данные о токенах */
 $response = json_decode($out, true);
 $access_token = $response['access_token']; //Access токен
 $refresh_token = $response['refresh_token']; //Refresh токен
